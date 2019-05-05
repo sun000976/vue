@@ -1,0 +1,22 @@
+{
+	"status":1,
+	"msg":"",
+	"appData":[
+		{
+			"productId":10001,
+			"productName":"小米6",
+			"productPrice":2499,
+			"productImage":"1.jpg"
+		},{
+			"productId":10002,
+			"productName":"音响",
+			"productPrice":199,
+			"productImage":"2.jpg"
+		},{
+			"productId":10003,
+			"productName":"YY",
+			"productPrice":499,
+			"productImage":"3.jpg"
+		}
+	]
+}

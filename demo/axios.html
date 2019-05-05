@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
+		<script src="lib/vue.min.js"></script>
+		<script src="lib/axios.min.js"></script>
+	</head>
+	<body>
+		<div id="app" class="container">
+			<h1>Axios插件讲解</h1>
+			<a class="btn btn-primary" @click="get" href="javascript:;">Get请求</a>
+			<a class="btn btn-primary" @click="post" href="javascript:;">Post请求</a>
+			<a class="btn btn-primary" @click="http"  href="javascript:;">http</a>
+			<div>
+				<span>{{msg}}</span>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		new Vue({
+			el:"#app",
+			data:{
+				msg:""
+			},
+			mounted:function(){
+				axios.interceptors.request.use(function(requset){
+					console.log('requset init')
+					console.log(requset)
+					//
+					return requset
+				})
+				axios.interceptors.response.use(function(response){
+					console.log("response init")
+					console.log(response)
+					return response
+				})
+			},
+			methods:{
+				get:function(){
+					axios.get("../package.json",{
+						params:{
+							userId:"999"
+						},
+						headers:{
+							token:"sunjiwei"
+						},
+						before:function(){
+							console.log('before init')
+						}
+					}).then(res=>{
+						this.msg = res.data
+					}).catch(function(error){
+						console.log('error init')
+					})
+				},
+				post:function(){
+					axios.post("../package.json",{
+						'userId':"888"
+					},{
+						headers:{
+							'token':"jiwei"
+						}
+					}).then(res=>{
+						console.log(res.body)
+						this.msg = res.body.data;	
+					}).catch(error=>{
+						console.log('error init')
+					})
+				},
+				http:function(){
+					axios({
+						url:"../package.json",
+						method:"get",
+						dara:{
+							userId:"101",
+						},
+						params:{
+							userId:"102",
+						},
+						header:{
+							token:"sunjiwei"
+						}
+					}).then(res=>{
+						console.log(res)
+						this.msg = res.data
+					}).catch(error=>{
+						console.log("error init")
+					})
+				}
+			}
+		})
+	</script>
+</html>

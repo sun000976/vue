@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<script src="lib/vue.min.js"></script>
+		<script src="lib/vue-resource.min.js"></script>
+	</head>
+	<body>
+		<div id="app" class="container">
+			<h1>vue-resource插件讲解</h1>
+			<a class="btn btn-primary" @click="get" href="javascript:;">Get请求</a>
+			<a class="btn btn-primary" @click="post" href="javascript:;">Post请求</a>
+			<a class="btn btn-primary" @click="http"  href="javascript:;">http</a>
+			<div>
+				<span>{{msg}}</span>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		new Vue({
+			el:"#app",
+			data:{
+				msg:""
+			},
+			mounted:function(){
+				Vue.http.interceptors.push(function(requset,next){
+					console.log("requset init")
+					next(function(response){
+						console.log("response init")
+						return response
+					})
+				})
+			},
+			http:{
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				//root:"https://www.easy-mock.com/mock/5bed54d17939e615b8bbdb84/example/"
+				root:"http://127.0.0.1:8020/nodeJs/sunjiwei/JiWei/"
+			},
+			methods:{
+				get:function(){
+					this.$http.get('../package.json',{
+						params:{
+							userId:"101",
+						},
+						headers:{
+							token1:"sunjiwei",
+						}
+					}).then(res=>{
+						this.msg = res.data;
+					});
+				},
+				post:function(){
+					this.$http.post('../package.json',{
+						userId:"102"
+					},{
+						headers:{
+							posttoken:"jiwei"
+						}
+					}).	then(res=>{
+						this.msg = res.data
+					});
+				},
+				http:function(){
+					this.$http({
+						url:"../package.json",
+						params:{
+							userId:"103",
+						},
+						headers:{
+							httptoken:"123"
+						},
+						timeout:50,
+						before:function(){
+							console.log("before init")
+						}
+					}).then(function(res){
+						this.msg = res.data
+					})
+				}
+			}
+		})
+	</script>
+</html>
